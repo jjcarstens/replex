@@ -1,0 +1,6 @@
+[submodule "src/librpitx"]
+	path = src/librpitx
+	url = https://github.com/F5OEO/librpitx
+[submodule "src/rpitx"]
+	path = src/rpitx
+	url = https://github.com/F5OEO/rpitx
