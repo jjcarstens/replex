@@ -8,3 +8,10 @@ erl_crash.dump
 *.beam
 /config/*.secret.exs
 /tmp/
+
+/dl
+/src/librpitx-*
+/src/.patched
+/src/.extracted
+/src/sendiq.cpp
+
