@@ -104,7 +104,6 @@ $(PREFIX) $(BUILD) $(DL):
 
 clean:
 	if [ -n "$(MIX_COMPILE_PATH)" ]; then $(RM) -r $(BUILD); fi
-	$(MAKE_ENV) $(MAKE) $(MAKE_OPTS) -C $(SRC_TOP)/librpitx/src clean
-	git -C $(SRC_TOP)/librpitx reset --hard HEAD
+	$(MAKE_ENV) $(MAKE) $(MAKE_OPTS) -C $(LIBRPITX_SRC)/src clean
 
 .PHONY: all clean calling_from_make fake_install install
