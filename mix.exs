@@ -7,7 +7,8 @@ defmodule Replex.MixProject do
     [
       app: :replex,
       build_embedded: true,
-      compilers: [:elixir_make | Mix.compilers()],
+      # TODO: Support compiling sendiq
+      # compilers: [:elixir_make | Mix.compilers()],
       elixir: "~> 1.9",
       deps: deps(),
       docs: docs(),

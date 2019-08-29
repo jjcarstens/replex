@@ -1,33 +1,53 @@
-# Usage:\nsendiq [-i File Input][-s Samplerate][-l] [-f Frequency] [-h Harmonic number] \n\
-# -i            path to File Input \n\
-# -s            SampleRate 10000-250000 \n\
-# -f float      central frequency Hz(50 kHz to 1500 MHz),\n\
-## -l            loop mode for file input\n\
-# -h            Use harmonic number n\n\
-# -t            IQ type (i16 default) {i16,u8,float,double}\n\
-# -?            help (this help).\n\
-# \n",\
-
 defmodule Replex do
-  @default_opts [
-    sample_rate: 200_000,
-    iq_type: :i16
-  ]
+  @target Mix.target()
 
-  def replay(file, frequency, opts) do
-    IO.inspect({file, frequency, opts})
+  @spec replay(String.t, number, list) :: :ok | {:error, ArgumentError.t} | {:error, RuntimeError.t}
+  def replay(file, frequency, opts \\ []) do
+    with {:ok, file} <- validate_file(file),
+         {:ok, frequency} <- validate_frequency(frequency),
+         {_output, 0} <- do_replay(file, frequency, opts)
+    do
+      :ok
+    else
+      {output, 1} -> {:error, %RuntimeError{message: "sendiq failed: #{output}"}}
+      err -> {:error, err}
+    end
   end
 
-  defmacro defreplay(name, file, frequency, opts) do
-    # name = Path.basename(file)
-    #       |> String.split(".iq")
-    #       |> hd
-    # pos = :elixir_locals.cache_env(__CALLER__)
-    quote location: :keep do
-      # :elixir_def.store_definition(:def, true, unquote(name), [unquote(file), unquote(frequency), unquote(opts)], unquote(pos))
-      def unquote(name) do
-        Replex.replay(unquote(file), unquote(frequency), unquote(opts))
-      end
+  @spec sendiq :: binary
+  def sendiq() do
+    # Currently only have it working with RPI3. Sit tight, more coming soon...
+    Path.join(:code.priv_dir(:replex), "sendiq_#{@target}")
+  end
+
+  defp do_replay(file, frequency, opts) do
+    args = [
+      "-f", to_string(frequency),
+      "-t", Keyword.get(opts, :iq_type, :u8) |> to_string,
+      "-s", Keyword.get(opts, :sample_rate, 240_000) |> to_string,
+      "-i", file
+    ]
+
+    System.cmd(sendiq(), args)
+  end
+
+  defp validate_file(file) when is_bitstring(file) do
+    if File.exists?(file) do
+      {:ok, file}
+    else
+      %RuntimeError{message: "file does not exist [#{file}]"}
     end
+  end
+
+  defp validate_file(_file) do
+    %ArgumentError{message: "file must be a string"}
+  end
+
+  defp validate_frequency(frequency) when is_number(frequency) do
+    {:ok, frequency}
+  end
+
+  defp validate_frequency(_freq) do
+    %ArgumentError{message: "frequency must be a number"}
   end
 end
