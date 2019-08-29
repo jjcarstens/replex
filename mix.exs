@@ -46,7 +46,8 @@ defmodule Replex.MixProject do
 
   defp package do
     [
-      links: %{"Github" => "https://github.com/jjcarstens/replex"}
+      links: %{"Github" => "https://github.com/jjcarstens/replex"},
+      licenses: ["Apache-2.0"]
     ]
   end
 end
