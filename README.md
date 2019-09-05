@@ -1,6 +1,6 @@
 # replex
 
-Use Elixir to replay radio signals on a Raspberry Pi
+Use Elixir to replay radio signals on a Raspberry Pi on GPIO 4
 
 ## About
 
@@ -12,6 +12,11 @@ binary for transmitting an I/Q recording file.
 If you're new to radio, SDR, and replaying radio signals, I have a full write-up
 about the motiviation for this library and how to go through the full process at
 [Nerves @ 434 MHz](https://embedded-elixir.com/post/2019-08-29-nerves-at-434-mhz/)
+
+You can see this in action and a little more on it's use-case in this lightning
+talk I presented at ElixirConf 2019:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/PEheIY6gGhY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## How to Use
 
@@ -73,3 +78,4 @@ back disco and flashing lights 🕺
 
 * Support compiling `sendiq` (I mainly compile and include in release)
 * Support more raspberry pi than `rpi3`
+* Support GPIO 6 and 20 pins for transmitting

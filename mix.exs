@@ -11,6 +11,7 @@ defmodule Replex.MixProject do
       # compilers: [:elixir_make | Mix.compilers()],
       elixir: "~> 1.9",
       deps: deps(),
+      description: "Use Elixir to replay radio signals on a Raspberry Pi on GPIO 4",
       docs: docs(),
       make_clean: ["clean"],
       make_targets: ["all"],
@@ -31,7 +32,7 @@ defmodule Replex.MixProject do
   defp deps do
     [
       {:elixir_make, "~> 0.6", runtime: false},
-      {:ex_doc, "~> 0.21", only: :docs, runtime: false}
+      {:ex_doc, "~> 0.21", only: :dev, runtime: false}
     ]
   end
 
