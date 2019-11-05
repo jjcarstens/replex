@@ -16,7 +16,7 @@ about the motiviation for this library and how to go through the full process at
 You can see this in action and a little more on it's use-case in this lightning
 talk I presented at ElixirConf 2019:
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/PEheIY6gGhY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[![](http://img.youtube.com/vi/PEheIY6gGhY/0.jpg)](http://www.youtube.com/watch?v=PEheIY6gGhY "Radio")
 
 ## How to Use
 
@@ -76,6 +76,6 @@ back disco and flashing lights 🕺
  
 ## Goals
 
-* Support compiling `sendiq` (I mainly compile and include in release)
-* Support more raspberry pi than `rpi3`
-* Support GPIO 6 and 20 pins for transmitting
+- [X] Support compiling `sendiq` (I mainly compile and include in release)
+- [X] Support more raspberry pi than `rpi3`
+- [] Support GPIO 6 and 20 pins for transmitting

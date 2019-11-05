@@ -1,6 +1,4 @@
 defmodule Replex do
-  @target Mix.target()
-
   @spec replay(String.t, number, list) :: :ok | {:error, ArgumentError.t} | {:error, RuntimeError.t}
   def replay(file, frequency, opts \\ []) do
     with {:ok, file} <- validate_file(file),
@@ -16,8 +14,7 @@ defmodule Replex do
 
   @spec sendiq :: binary
   def sendiq() do
-    # Currently only have it working with RPI3. Sit tight, more coming soon...
-    Path.join(:code.priv_dir(:replex), "sendiq_#{@target}")
+    Path.join(:code.priv_dir(:replex), "sendiq")
   end
 
   defp do_replay(file, frequency, opts) do

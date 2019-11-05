@@ -7,8 +7,7 @@ defmodule Replex.MixProject do
     [
       app: :replex,
       build_embedded: true,
-      # TODO: Support compiling sendiq
-      # compilers: [:elixir_make | Mix.compilers()],
+      compilers: [:elixir_make | Mix.compilers()],
       elixir: "~> 1.9",
       deps: deps(),
       description: "Use Elixir to replay radio signals on a Raspberry Pi on GPIO 4",

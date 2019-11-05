@@ -62,8 +62,11 @@ all: $(TARGETS)
 
 install: $(PREFIX)/sendiq
 
-$(PREFIX)/sendiq: $(PREFIX) $(SRC_TOP)/sendiq.cpp $(BUILD)/lib/librpitx.a
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) -c $(SRC_TOP)/sendiq.cpp -lrpitx -L$(BUILD)/lib -I$(BUILD)/include -o $(PREFIX)/sendiq
+$(BUILD)/sendiq.o: $(SRC_TOP)/sendiq.cpp
+	$(CXX) -c $(CXXFLAGS) $(LDFLAGS) -I$(BUILD)/include -o $@ $<
+
+$(PREFIX)/sendiq: $(PREFIX) $(BUILD)/lib/librpitx.a $(BUILD)/sendiq.o
+	$(CXX) $(BUILD)/sendiq.o $(CXXFLAGS) $(LDFLAGS) -L$(BUILD)/lib -lrpitx -o $(PREFIX)/sendiq
 
 $(BUILD)/lib/librpitx.a: $(BUILD) $(SRC_TOP)/.patched
 	$(MAKE_ENV) $(MAKE) $(MAKE_OPTS) -C $(LIBRPITX_SRC)/src
