@@ -30,6 +30,7 @@ defmodule Replex.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:circuits_gpio, "~> 0.4"},
       {:elixir_make, "~> 0.6", runtime: false},
       {:ex_doc, "~> 0.21", only: :dev, runtime: false}
     ]
