@@ -1,7 +1,7 @@
 defmodule Replex.MixProject do
   use Mix.Project
 
-  @version "0.2.0"
+  @version "0.2.1"
 
   def project do
     [
@@ -46,6 +46,16 @@ defmodule Replex.MixProject do
 
   defp package do
     [
+      files: [
+        "CHANGELOG.md",
+        "lib",
+        "LICENSE",
+        "Makefile",
+        "mix.exs",
+        "patches",
+        "README.md",
+        "src/.keep"
+      ],
       links: %{"Github" => "https://github.com/jjcarstens/replex"},
       licenses: ["Apache-2.0"]
     ]

@@ -1,10 +1,10 @@
 defmodule Replex do
-  @spec replay(String.t, number, list) :: :ok | {:error, ArgumentError.t} | {:error, RuntimeError.t}
+  @spec replay(String.t(), number, list) ::
+          :ok | {:error, ArgumentError.t()} | {:error, RuntimeError.t()}
   def replay(file, frequency, opts \\ []) do
     with {:ok, file} <- validate_file(file),
          {:ok, frequency} <- validate_frequency(frequency),
-         {_output, 0} <- do_replay(file, frequency, opts)
-    do
+         {_output, 0} <- do_replay(file, frequency, opts) do
       :ok
     else
       {output, 1} -> {:error, %RuntimeError{message: "sendiq failed: #{output}"}}
@@ -19,10 +19,14 @@ defmodule Replex do
 
   defp do_replay(file, frequency, opts) do
     args = [
-      "-f", to_string(frequency),
-      "-t", Keyword.get(opts, :iq_type, :u8) |> to_string,
-      "-s", Keyword.get(opts, :sample_rate, 240_000) |> to_string,
-      "-i", file
+      "-f",
+      to_string(frequency),
+      "-t",
+      Keyword.get(opts, :iq_type, :u8) |> to_string,
+      "-s",
+      Keyword.get(opts, :sample_rate, 240_000) |> to_string,
+      "-i",
+      file
     ]
 
     System.cmd(sendiq(), args)
