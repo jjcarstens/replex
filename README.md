@@ -1,4 +1,6 @@
 # replex
+[![Hex version](https://img.shields.io/hexpm/v/replex.svg "Hex version")](https://hex.pm/packages/replex)
+[![API docs](https://img.shields.io/hexpm/v/replex.svg?label=hexdocs "API docs")](https://hexdocs.pm/replex/Replex.html)
 
 Use Elixir to replay radio signals on a Raspberry Pi on GPIO 4
 
