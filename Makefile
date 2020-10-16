@@ -12,7 +12,7 @@
 # CFLAGS	compiler flags for compiling all C files
 # LDFLAGS	linker flags for linking all binaries
 
-LIBRPITX_VERSION = 5475c41ccf202b544cac6cf0c670ae40210a9f4b
+LIBRPITX_VERSION = 5c1613589d8b89287f5af20c53145bc63ebc2d6f
 
 TOP := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 SRC_TOP = $(TOP)/src
