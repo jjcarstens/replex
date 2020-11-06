@@ -1,7 +1,8 @@
 defmodule Replex.MixProject do
   use Mix.Project
 
-  @version "0.2.2"
+  @version "0.3.0"
+  @source_url "https://github.com/jjcarstens/replex"
 
   def project do
     [
@@ -37,10 +38,11 @@ defmodule Replex.MixProject do
 
   defp docs do
     [
-      extras: ["README.md"],
+      extras: ["README.md", "CHANGELOG.md"],
       main: "readme",
       source_ref: "v#{@version}",
-      source_url: "https://github.com/jjcarstens/replex"
+      source_url: @source_url,
+      skip_undefined_reference_warnings_on: ["CHANGELOG.md"]
     ]
   end
 
@@ -56,7 +58,7 @@ defmodule Replex.MixProject do
         "README.md",
         "src/.keep"
       ],
-      links: %{"Github" => "https://github.com/jjcarstens/replex"},
+      links: %{"Github" => @source_url},
       licenses: ["Apache-2.0"]
     ]
   end
