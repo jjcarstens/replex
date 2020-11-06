@@ -1,6 +1,6 @@
-From 6c792dd0bc06764ca40e4b75b0dd2cfcb6a18f8c Mon Sep 17 00:00:00 2001
-From: Frank Hunleth <fhunleth@troodon-software.com>
-Date: Thu, 22 Aug 2019 09:33:12 -0400
+From 09fcf073731c6a0904b7af36148d3edcd6780b9e Mon Sep 17 00:00:00 2001
+From: Jon Carstens <jjcarstens@me.com>
+Date: Mon, 26 Oct 2020 09:21:30 -0600
 Subject: [PATCH] Allow compiler option overrides for crosscompilation
 
 ---
@@ -8,18 +8,18 @@ Subject: [PATCH] Allow compiler option overrides for crosscompilation
  1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/src/Makefile b/src/Makefile
-index 4cc2324..cffa0dc 100644
+index 012c34e..f8c9255 100644
 --- a/src/Makefile
 +++ b/src/Makefile
 @@ -1,13 +1,13 @@
 -CFLAGS = -Wall -O3 -Wno-unused-variable
--CXXFLAGS = -std=c++11 -Wall -O3 -Wno-unused-variable
--LDFLAGS = -lm -lrt -lpthread
+-CXXFLAGS = -std=c++11 -Wall -O3 -Wno-unused-variable -I /opt/vc/include 
+-LDFLAGS = -lm -lrt -lpthread -L/opt/vc/lib -lbcm_host
 -CCP = c++
 -CC = cc
 +CFLAGS += -Wall -O3 -Wno-unused-variable
-+CXXFLAGS += -std=c++11 -Wall -O3 -Wno-unused-variable
-+LDFLAGS += -lm -lrt -lpthread
++CXXFLAGS += -std=c++11 -Wall -O3 -Wno-unused-variable -I /opt/vc/include 
++LDFLAGS += -lm -lrt -lpthread -L/opt/vc/lib -lbcm_host
 +CXX ?= c++
 +CC ?= cc
  
@@ -32,5 +32,5 @@ index 4cc2324..cffa0dc 100644
  
  install: librpitx
 -- 
-2.20.1 (Apple Git-117)
+2.20.1
 

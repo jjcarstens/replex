@@ -12,7 +12,9 @@
 # CFLAGS	compiler flags for compiling all C files
 # LDFLAGS	linker flags for linking all binaries
 
-LIBRPITX_VERSION = 5c1613589d8b89287f5af20c53145bc63ebc2d6f
+LIBRPITX_VERSION = 0aec0363e26867e7be75f52b9d0e22e8518a4eb0
+PATCH_DIRS = $(TOP)/patches/librpitx
+LDFLAGS += -lbcm_host
 
 TOP := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 SRC_TOP = $(TOP)/src
@@ -44,7 +46,6 @@ ifeq ($(SED),)
 endif
 
 MAKE_OPTS += SED=$(SED)
-PATCH_DIRS = $(TOP)/patches/librpitx
 
 ifeq ($(CROSSCOMPILE),)
 $(warning Native OS compilation is not supported on OSX. Skipping compilation.)
