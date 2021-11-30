@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.4.0
+
+### Added
+
+* Updates `librpitx` to newly released with minor fixes for cross-compilation.
+See the [referenced commit](https://github.com/F5OEO/librpitx/tree/d514817b6507487606dbb7bf76741d60fbccaa10)
+for more details
+
+### Fixes
+
+* `sendiq.cpp` is now referenced by commit rather than master when downloading
+  to fix an issue where it may not be supported by the used `librpitx` version
+
 ## v0.3.0
 
 Updates `librpitx` to newly released version supporting rpi4 devices
