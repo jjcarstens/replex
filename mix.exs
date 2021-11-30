@@ -54,7 +54,6 @@ defmodule Replex.MixProject do
         "LICENSE",
         "Makefile",
         "mix.exs",
-        "patches",
         "README.md",
         "src/.keep"
       ],
