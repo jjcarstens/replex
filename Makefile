@@ -63,31 +63,39 @@ all: $(TARGETS)
 install: $(PREFIX)/sendiq
 
 $(BUILD)/sendiq.o: $(SRC_TOP)/sendiq.cpp
+	@echo " CC $(notdir $@)"
 	$(CXX) -c $(CXXFLAGS) $(LDFLAGS) -I$(BUILD)/include -o $@ $<
 
 $(PREFIX)/sendiq: $(PREFIX) $(BUILD)/lib/librpitx.a $(BUILD)/sendiq.o
+	@echo " LD $(notdir $@)"
 	$(CXX) $(BUILD)/sendiq.o $(CXXFLAGS) $(LDFLAGS) -L$(BUILD)/lib -lrpitx -o $(PREFIX)/sendiq
 
 $(BUILD)/lib/librpitx.a: $(BUILD) $(SRC_TOP)/.extracted
+	@echo " AR $(notdir $@)"
 	$(MAKE_ENV) $(MAKE) $(MAKE_OPTS) -C $(LIBRPITX_SRC)/src all install
 
 fake_install: $(PREFIX)
+	@echo " Create fake sendiq"
 	printf "#!/bin/sh\nexit 0\n" > $(PREFIX)/sendiq
 
 $(SRC_TOP)/sendiq.cpp: $(DL)/sendiq-$(SENDIQ_VERSION).cpp
+	@echo " CP $(notdir $@)"
 	# Consider committing sendiq.cpp to this repo rather than downloading it...
 	cp $(DL)/sendiq-$(SENDIQ_VERSION).cpp $(SRC_TOP)/sendiq.cpp
 
 $(SRC_TOP)/.extracted: $(DL)/librpitx-$(LIBRPITX_VERSION).tar.gz $(DL)/sendiq-$(SENDIQ_VERSION).cpp
+	@echo " EX librpitx-$(LIBRPITX_VERSION)"
 	# sha256sum -c librpitx.hash
 	tar x -C $(SRC_TOP) -f $(DL)/librpitx-$(LIBRPITX_VERSION).tar.gz
 	touch $(SRC_TOP)/.extracted
 
 $(DL)/librpitx-$(LIBRPITX_VERSION).tar.gz: $(DL)
-	curl -L https://github.com/F5OEO/librpitx/archive/$(LIBRPITX_VERSION).tar.gz > $@
+	@echo " DL $(notdir $@)"
+	curl -sSL https://github.com/F5OEO/librpitx/archive/$(LIBRPITX_VERSION).tar.gz > $@
 
 $(DL)/sendiq-$(SENDIQ_VERSION).cpp: $(DL)
-	curl -L https://raw.githubusercontent.com/F5OEO/rpitx/$(SENDIQ_VERSION)/src/sendiq.cpp > $@
+	@echo " DL $(notdir $@)"
+	curl -sSL https://raw.githubusercontent.com/F5OEO/rpitx/$(SENDIQ_VERSION)/src/sendiq.cpp > $@
 
 $(PREFIX) $(BUILD) $(DL):
 	mkdir -p $@
@@ -97,3 +105,6 @@ clean:
 	$(MAKE_ENV) $(MAKE) $(MAKE_OPTS) -C $(LIBRPITX_SRC)/src clean
 
 .PHONY: all clean calling_from_make fake_install install
+
+# Don't echo commands unless the caller exports "V=1"
+${V}.SILENT:
