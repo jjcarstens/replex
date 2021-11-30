@@ -12,9 +12,8 @@
 # CFLAGS	compiler flags for compiling all C files
 # LDFLAGS	linker flags for linking all binaries
 
-LIBRPITX_VERSION = 0aec0363e26867e7be75f52b9d0e22e8518a4eb0
-PATCH_DIRS = $(TOP)/patches/librpitx
-LDFLAGS += -lbcm_host
+LIBRPITX_VERSION = d514817b6507487606dbb7bf76741d60fbccaa10
+SENDIQ_VERSION = e65d3c4ecac7a56d9925e73c16b7616461bf6202
 
 TOP := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 SRC_TOP = $(TOP)/src
@@ -45,7 +44,7 @@ ifeq ($(SED),)
     $(error gsed required to build. Install by running "brew install gnu-sed")
 endif
 
-MAKE_OPTS += SED=$(SED)
+MAKE_OPTS += SED=$(SED) PREFIX=$(BUILD)
 
 ifeq ($(CROSSCOMPILE),)
 $(warning Native OS compilation is not supported on OSX. Skipping compilation.)
@@ -69,39 +68,26 @@ $(BUILD)/sendiq.o: $(SRC_TOP)/sendiq.cpp
 $(PREFIX)/sendiq: $(PREFIX) $(BUILD)/lib/librpitx.a $(BUILD)/sendiq.o
 	$(CXX) $(BUILD)/sendiq.o $(CXXFLAGS) $(LDFLAGS) -L$(BUILD)/lib -lrpitx -o $(PREFIX)/sendiq
 
-$(BUILD)/lib/librpitx.a: $(BUILD) $(SRC_TOP)/.patched
-	$(MAKE_ENV) $(MAKE) $(MAKE_OPTS) -C $(LIBRPITX_SRC)/src
-	# Install - this is a little lame...
-	mkdir -p $(BUILD)/lib
-	cp $(LIBRPITX_SRC)/src/librpitx.a $(BUILD)/lib
-	mkdir -p $(BUILD)/include/librpitx/src
-	cp $(LIBRPITX_SRC)/src/*.h $(BUILD)/include/librpitx/src
+$(BUILD)/lib/librpitx.a: $(BUILD) $(SRC_TOP)/.extracted
+	$(MAKE_ENV) $(MAKE) $(MAKE_OPTS) -C $(LIBRPITX_SRC)/src all install
 
 fake_install: $(PREFIX)
 	printf "#!/bin/sh\nexit 0\n" > $(PREFIX)/sendiq
 
-$(SRC_TOP)/sendiq.cpp: $(DL)/sendiq.cpp
+$(SRC_TOP)/sendiq.cpp: $(DL)/sendiq-$(SENDIQ_VERSION).cpp
 	# Consider committing sendiq.cpp to this repo rather than downloading it...
-	cp $(DL)/sendiq.cpp $(SRC_TOP)/sendiq.cpp
+	cp $(DL)/sendiq-$(SENDIQ_VERSION).cpp $(SRC_TOP)/sendiq.cpp
 
-$(SRC_TOP)/.extracted: $(DL)/librpitx-$(LIBRPITX_VERSION).tar.gz $(DL)/sendiq.cpp
+$(SRC_TOP)/.extracted: $(DL)/librpitx-$(LIBRPITX_VERSION).tar.gz $(DL)/sendiq-$(SENDIQ_VERSION).cpp
 	# sha256sum -c librpitx.hash
 	tar x -C $(SRC_TOP) -f $(DL)/librpitx-$(LIBRPITX_VERSION).tar.gz
 	touch $(SRC_TOP)/.extracted
 
-$(SRC_TOP)/.patched: $(SRC_TOP)/.extracted
-	cd $(LIBRPITX_SRC); \
-	for patchdir in $(PATCH_DIRS); do \
-	    for patch in $$(ls $$patchdir); do \
-		patch -p1 < "$$patchdir/$$patch"; \
-	    done; \
-	done
-	touch $(SRC_TOP)/.patched
-
 $(DL)/librpitx-$(LIBRPITX_VERSION).tar.gz: $(DL)
 	curl -L https://github.com/F5OEO/librpitx/archive/$(LIBRPITX_VERSION).tar.gz > $@
-$(DL)/sendiq.cpp: $(DL)
-	curl -L https://raw.githubusercontent.com/F5OEO/rpitx/master/src/sendiq.cpp > $@
+
+$(DL)/sendiq-$(SENDIQ_VERSION).cpp: $(DL)
+	curl -L https://raw.githubusercontent.com/F5OEO/rpitx/$(SENDIQ_VERSION)/src/sendiq.cpp > $@
 
 $(PREFIX) $(BUILD) $(DL):
 	mkdir -p $@
